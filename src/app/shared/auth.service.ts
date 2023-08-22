@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { User } from './user';
 import { Observable, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import jwtDecode from 'jwt-decode';
 import {
   HttpClient,
   HttpHeaders,
@@ -38,7 +39,14 @@ export class AuthService {
   }
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
-    return authToken !== null ? true : false;
+    if (authToken) {
+      const decodedToken: any = jwtDecode(authToken);   
+      const currentTime = Date.now() / 1000;
+      if (decodedToken.exp && decodedToken.exp > currentTime) {
+        return true;
+      }
+    }
+    return false;
   }
   doLogout() {
     let removeToken = localStorage.removeItem('access_token');

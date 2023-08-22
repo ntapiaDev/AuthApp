@@ -3,11 +3,14 @@ import { AuthService } from './shared/auth.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
 })
 export class AppComponent {
-  constructor(public authService: AuthService) { }
+  userId: number;
+  constructor(public authService: AuthService) {
+    this.userId = authService.getCurrentId();
+  }
   logout() {
-    this.authService.doLogout()
+    this.authService.doLogout();
   }
 }

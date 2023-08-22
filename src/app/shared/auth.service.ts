@@ -37,6 +37,13 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('access_token');
   }
+  getCurrentId() {
+    let authToken = localStorage.getItem('access_token');
+    if (authToken) {
+      const decodedToken: any = jwtDecode(authToken);
+      return decodedToken.userId;
+    } else return null;
+  }
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
     if (authToken) {
